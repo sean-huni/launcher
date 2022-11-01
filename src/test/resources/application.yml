@@ -1,0 +1,23 @@
+
+quarkus:
+  hibernate-orm:
+    validate-in-dev-mode: true
+#    dialect: mariadb
+#    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    database:
+      generation: validate
+      default-schema: sbp
+      log:
+        format-sql: true
+    scripts:
+      generation: none
+  datasource:
+    jdbc:
+      url: jdbc:mariadb://localhost:3306/sbp
+      driver: org.mariadb.jdbc.Driver
+    username: root
+    password: NEW_PASS
+    db-kind: mariadb
+  log:
+    console:
+      json: false

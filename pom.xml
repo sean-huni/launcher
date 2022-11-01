@@ -16,6 +16,8 @@
         <quarkus.platform.version>2.13.3.Final</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+        <camel-quarkus-gson.version>2.9.0</camel-quarkus-gson.version>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -94,6 +96,20 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.camel.quarkus</groupId>-->
+<!--            <artifactId>camel-quarkus-gson</artifactId>-->
+<!--            <version>${camel-quarkus-gson.version}</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.jboss.logmanager</groupId>
+            <artifactId>log4j2-jboss-logmanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
@@ -124,6 +140,18 @@
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.quarkus</groupId>
+                            <artifactId>quarkus-extension-processor</artifactId>
+                            <version>${quarkus.platform.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>

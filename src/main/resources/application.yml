@@ -1,6 +1,6 @@
-greeting:
-  message: "hello"
-quarkus:
-  hibernate-orm:
-    database:
-      generation: "drop-and-create"
+#greeting:
+#  message: "hello"
+#quarkus:
+#  hibernate-orm:
+#    database:
+#      generation: "validate"
