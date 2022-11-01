@@ -13,10 +13,10 @@ quarkus:
       generation: none
   datasource:
     jdbc:
-      url: jdbc:mariadb://localhost:3306/sbp
+      url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
       driver: org.mariadb.jdbc.Driver
-    username: root
-    password: NEW_PASS
+    username: ${DB_USER}
+    password: ${DB_PASS}
     db-kind: mariadb
   log:
     console:

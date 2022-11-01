@@ -24,6 +24,10 @@ public class BatchJobExecution extends AbstractJsonUtil {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_execution_id", nullable = false)
     private Long jobExecutionId;
+    @Column(name = "status")
+    private String status;
+    @Column(name = "exit_code")
+    private String exitCode;
     @Column(name = "create_time")
     private LocalDateTime createTime;
     @Column(name = "start_time")
