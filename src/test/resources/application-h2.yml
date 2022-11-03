@@ -5,7 +5,7 @@ quarkus:
 #    dialect: mariadb
 #    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     database:
-      generation: validate
+      generation: create-drop
       default-schema: sbp
       log:
         format-sql: true
@@ -13,11 +13,12 @@ quarkus:
       generation: none
   datasource:
     jdbc:
-      url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
-      driver: org.mariadb.jdbc.Driver
-    username: ${DB_USER}
-    password: ${DB_PASS}
-    db-kind: mariadb
+#      url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/
+      url: jdbc:h2:mem:${DB_NAME}?createDatabaseIfNotExist=true;DB_CLOSE_DELAY=-1;
+      driver: org.h2.Driver
+    username: sa
+    password:
+    db-kind: h2
   log:
     console:
       json: false

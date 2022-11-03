@@ -11,7 +11,7 @@ public class SftpOpServiceImpl implements SftpOpService {
     }
 
     @Override
-    public void moveFile(String source, String destination) {
+    public void moveFile(final String source, final String destination) {
 
     }
 }

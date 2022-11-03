@@ -1,10 +1,13 @@
 package com.example.service.kube;
 
-public interface KubeOpService {
+import com.example.exception.JobAlreadyExistsException;
 
-    void createPod();
+import java.util.Collection;
+
+public interface KubeOpService {
+    void createPod(String jobNamePostfix, String filePath) throws JobAlreadyExistsException;
 
     void destroyPod();
 
-    String getPodStatus();
+    Collection<KPod> getPodStatus();
 }
