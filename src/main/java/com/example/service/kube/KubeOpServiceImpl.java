@@ -5,6 +5,8 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.quarkus.runtime.StartupEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -33,12 +35,59 @@ public class KubeOpServiceImpl implements KubeOpService {
         for (final Pod pod : podList) {
             log.info(" * {}", pod.getMetadata().getName());
         }
+
+        try (var x = client.pods().watch(new Watcher<Pod>() {
+            /**
+             * If the Watcher can reconnect itself after an error
+             *
+             * @return
+             */
+            @Override
+            public boolean reconnecting() {
+                return Watcher.super.reconnecting();
+            }
+
+
+            @Override
+            public void eventReceived(Action action, Pod pod) {
+                log.info("Event-Action: {}", action.name());
+                log.info("Pod: {}", pod.getStatus().getNominatedNodeName());
+            }
+
+
+            /**
+             * Invoked when the watcher is gracefully closed.
+             */
+            @Override
+            public void onClose() {
+                Watcher.super.onClose();
+            }
+
+            /**
+             * Invoked when the watcher closes due to an Exception.
+             *
+             * @param cause What caused the watcher to be closed.
+             */
+            @Override
+            public void onClose(WatcherException cause) {
+                log.error(cause);
+            }
+        })) {
+            log.info(x);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
     }
 
-    //    @Override
+    /**
+     * Left this code for educational purposes. It's essential to spot why this wasn't an ideal approach, even though
+     * it works.
+     *
+     * @throws FileNotFoundException if the sbp-job.yml isn't found.
+     */
     @Deprecated
     public void createPod2() throws FileNotFoundException {
-        final Job j = client.batch().v1().jobs().load(new FileInputStream("/Users/sean/env/eq/proj/spring/ms/launcher/.job/sbp-job.yml")).get();
+        final Job j = client.batch().v1().jobs().load(new FileInputStream(".job/sbp-job.yml")).get();
         final Job job = client.batch().v1().jobs().inNamespace("default").createOrReplace(j);
 //       final Pod p = client.pods().load(new FileInputStream("")).get();
 //       var pod = client.pods().createOrReplace(p);
@@ -63,22 +112,19 @@ public class KubeOpServiceImpl implements KubeOpService {
 
     }
 
-    public void destroyPod() {
-
+    @Override
+    public void destroyPod(final Job j) {
+        client.batch().v1().jobs().inNamespace("default").delete(j);
     }
 
     public Collection<KPod> getPodStatus() {
-
-//        return  client.pods().list().getItems().stream()
-//                .filter(p -> p.getMetadata().getName().contains("sbp"))
-//                .map(pod -> new KPod(pod.getMetadata().getName(), pod.getStatus().getMessage()))
-//                .collect(Collectors.toCollection(ArrayList::new));
-
-        return client.pods().list().getItems().stream().filter(p -> p.getStatus().getContainerStatuses().size() > 0 && p.getMetadata().getName().contains("sbp")).map(p -> new KPod(p.getMetadata().getName(), p.getStatus().getContainerStatuses().stream().findFirst().get().getState().toString())).collect(Collectors.toList());
+        return client.pods().list()
+                .getItems().stream()
+                .filter(p -> p.getStatus().getContainerStatuses().size() > 0 && p.getMetadata().getName().contains("sbp"))
+                .map(p -> new KPod(p.getMetadata().getName(),
+                        p.getStatus().getContainerStatuses().stream().findFirst().get().getState().toString()))
+                .collect(Collectors.toList());
     }
 }
-
-/*client.pods().list().getItems().get(0).getStatus().getContainerStatuses().get(0).getName() +"\t" +
- */
 
 //record KPod(String name, String status){};

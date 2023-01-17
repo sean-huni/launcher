@@ -21,6 +21,7 @@ public class MetadataEditorServiceImpl implements MetadataEditorService {
         this.batchConfigDir = batchConfigDir;
     }
 
+    @Deprecated(since = "03-Nov-2022")
     public void writeYmlConfigFile() {
 
         final ClassLoader classLoader = getClass().getClassLoader();

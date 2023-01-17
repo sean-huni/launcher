@@ -5,16 +5,19 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Log4j2
 public class ClientProvider {
+    private final String kubeConfig;
 
-    @ConfigProperty(name = "kube.config")
-    private String kubeConfig;
+
+    public ClientProvider(@ConfigProperty(name = "kube.config") String kubeConfig) {
+        this.kubeConfig = kubeConfig;
+    }
+
 
     @Produces
     @Singleton

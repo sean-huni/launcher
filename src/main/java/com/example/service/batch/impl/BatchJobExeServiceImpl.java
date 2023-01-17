@@ -7,14 +7,11 @@ import com.example.service.batch.BatchJobExeService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-
 import java.util.Objects;
 
 import static java.util.Objects.nonNull;
-import static java.util.Objects.requireNonNullElse;
 
 @ApplicationScoped
-//@RequiredArgsConstructor
 public class BatchJobExeServiceImpl implements BatchJobExeService {
 
     private final BatchJobExecutionRepo batchJobExecutionRepo;
@@ -30,9 +27,9 @@ public class BatchJobExeServiceImpl implements BatchJobExeService {
        final BatchJobExecution bj = batchJobExecutionRepo.findBatchJobExecutionByBatchJobExecutionParams_StringValContains(fileName);
 
         if (nonNull(bj) && Objects.equals(bj.getStatus(), BatchStatus.COMPLETED.name())) {
-            //move file to an ARCHIVE directory. Hint: Use the SftpOpService
+            //ToDo: move file to an ARCHIVE directory. Hint: Use the FileOpService
         } else if (nonNull(bj) && Objects.equals(bj.getStatus(), BatchStatus.FAILED.name())) {
-            //move file to an ERROR directory. Hint: Use the SftpOpService
+            //ToDo: move file to an ERROR directory. Hint: Use the FileOpService
         }
 
         return false;

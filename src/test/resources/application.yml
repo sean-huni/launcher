@@ -1,9 +1,6 @@
-
 quarkus:
   hibernate-orm:
     validate-in-dev-mode: true
-#    dialect: mariadb
-#    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     database:
       generation: validate
       default-schema: sbp
@@ -26,7 +23,12 @@ quarkus:
 batch:
   dir: src/test/resources/data/samples
   job: .job/sbp-job.yml
+  root: src/test/resources/data/demo/$CLIENT$
+  input: ${batch.root}/in
+  archive: ${batch.root}/arc/yyyy/mm/dd/hr
+  error: ${batch.root}/err/yyyy/mm/dd/hr
 
+# Absolute path of where the Config.YML file is saved on volume/disk.
 ---
 kube:
   config: /Users/sean/env/eq/proj/spring/ms/launcher/src/test/resources/config/.kube/config.yml
