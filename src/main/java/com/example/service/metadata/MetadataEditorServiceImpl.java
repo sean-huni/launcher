@@ -1,9 +1,9 @@
 package com.example.service.metadata;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

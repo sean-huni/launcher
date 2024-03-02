@@ -3,10 +3,10 @@ package com.example.service.file;
 import com.example.exception.ClientNotProvidedException;
 import com.example.exception.FileNotFoundException;
 import com.example.exception.InstructionException;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -97,7 +97,17 @@ public class FileOpServiceImpl implements FileOpService {
         log.info("To: {}", destinationFilePath);
 
         final File inputFile = new File(inputFilePath);
-        inputFile.renameTo(new File(destinationFilePath));
+        if (inputFile.setReadable(true, false)) {
+            log.info("Read Permission Set: {}", inputFile.getName());
+        }
+        if (inputFile.setWritable(false, false)) {
+            log.info("Write Permission Set: {}", inputFile.getName());
+        }
+        if (inputFile.setExecutable(false, false)) {
+            log.info("Execute Permission Set: {}", inputFile.getName());
+        }
+        final var destFile = new File(destinationFilePath);
+        if (inputFile.renameTo(destFile)) log.info("{} Moved/Renamed To {}", inputFile.getName(), destFile.getName());
         log.info("====================END - FILE-MOVE-OPERATION - END=====================");
     }
 

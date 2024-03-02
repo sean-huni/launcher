@@ -2,12 +2,12 @@ package com.example.service.kube;
 
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 @Log4j2
 public class ClientProvider {
